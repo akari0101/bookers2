@@ -8,3 +8,30 @@
     <%= link_to "Destroy", book_path(@book), method: :delete %>
   <% end %>
 </div>
+
+
+
+<div class="row">
+  <div class="col-xs-3">
+    <h2>User info</h2>
+    <%= render 'users/info', user: current_user %>
+
+    <h2>New book</h2>
+    <%= render 'books/new', book: @book %>
+  </div>
+
+  <div class="col-xs-9">
+    <h2>Book detail</h2>
+    <%= render 'books/table', books: @books %>
+  </div>
+</div>
+
+
+<div class='col-md-8 offset-md-1'>
+  		<h2>Book detail</h2>
+  		<table class='table'>
+  		  <tr>
+          <td><a href="/users/31448">
+            <img src="https://bookers-level2.herokuapp.com/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBMFpjQVE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--b8cd7a83416a9f5d9876e25556b63c2318e0b5e3/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCem9MWm05eWJXRjBTU0lJYW5CbkJqb0dSVlE2RkhKbGMybDZaVjkwYjE5c2FXMXBkRnNIYVdscGFRPT0iLCJleHAiOm51bGwsInB1ciI6InZhcmlhdGlvbiJ9fQ==--4a929dbc7794f3c4610ba9ba5402762ad9cd1a14/default-image.jpg" /><br>
+            Olivia
+</a>         
