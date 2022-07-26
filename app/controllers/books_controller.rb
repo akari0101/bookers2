@@ -37,12 +37,25 @@ class BooksController < ApplicationController
 
 
   def create
-    #flash[:notice]="You have creatad book successfully."
+    @book = Book.new(book_params)
+    @book.user_id = current_user.id
+    if @book.save
+      redirect_to book_path(@book.id)
+      flash[:notice]="You have creatad book successfully."
+    else
+      render :index
+    end
   end
 
 
   def update
-    #flash[:notice]="Book was successfully updated."
+    @book = Book.find(params[:id])
+    #ユーザーの取得
+    @book.update(book_params)
+    #ユーザーのアップデート
+    redirect_to book_path(user.id)
+    #ユーザーの詳細ページへのパス
+    flash[:notice]="Book was successfully updated."
   end
 
 
