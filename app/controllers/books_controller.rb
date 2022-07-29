@@ -1,28 +1,24 @@
 class BooksController < ApplicationController
 
+  before_action :correct_user, only: [:edit,:destroy]
 
-  # 投稿データの保存
-  def create
-    @book = Book.new(book_params)
-    @book.user_id = current_user.id
-    if @book.save
-        flash[:notice] = "You have created book successfully."
-      redirect_to book_path(@book)
-    else
-      @books = Book.all
-      @user = current_user
-      render :index
+
+  def correct_user
+    book = Book.find(params[:id])
+    if current_user.id != book.user_id
+      redirect_to books_path
     end
   end
+
 
   #indexアクションは一覧画面ようのアクションとして定義します。
   #一覧画面には投稿したBook全てを表示させるので、全てのデータを取得する記述をします。
   #Controllerのアクションでインスタンス変数を指定しておくことで、
   #viewファイル上でインスタンス変数に格納された情報を表示させることができます。
   def index
-    @user = current_user
     @book = Book.new
     @books = Book.all
+    @user = current_user
   end
 
   def show
@@ -33,16 +29,25 @@ class BooksController < ApplicationController
 
 
   def edit
+    @book = Book.find(params[:id])
+    if @book.user_id = current_user.id
+      render "edit"
+    else
+      redirect_to books_path
+    end
   end
 
 
+  # 投稿データの保存
   def create
     @book = Book.new(book_params)
     @book.user_id = current_user.id
     if @book.save
-      redirect_to book_path(@book.id)
-      flash[:notice]="You have creatad book successfully."
+      flash[:notice] = "You have created book successfully."
+      redirect_to book_path(@book)
     else
+      @books = Book.all
+      @user = current_user
       render :index
     end
   end
@@ -51,19 +56,23 @@ class BooksController < ApplicationController
   def update
     @book = Book.find(params[:id])
     #ユーザーの取得
-    @book.update(book_params)
-    #ユーザーのアップデート
-    redirect_to book_path(user.id)
-    #ユーザーの詳細ページへのパス
-    flash[:notice]="Book was successfully updated."
+    @book.user_id = current_user.id
+    if @book.update(book_params)
+        #ユーザーのアップデート
+      flash[:notice]="You have updated book successfully."
+      redirect_to book_path(@book)
+      #ユーザーの詳細ページへのパス
+    else
+      render :edit
+    end
   end
 
 
   def destroy
     @book = Book.find(params[:id])
     if @book.destroy
-      redirect_to books_path
       flash[:notice] = "Book was successfully destroyed."
+      redirect_to books_path
     end
   end
 

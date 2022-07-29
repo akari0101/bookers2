@@ -1,12 +1,28 @@
 class UsersController < ApplicationController
-  
-  def index
-    @book = Book.new
-    @user = current_user
-    @users = User.all
+
+  before_action :correct_user, only: [:edit,:destroy]
+
+
+  def correct_user
+    user = User.find(params[:id])
+    if current_user.id != user.id
+      redirect_to user_path(current_user)
+    end
   end
-  
-  
+
+
+  def new
+    @user = User.new
+  end
+
+
+  def index
+    @users = User.all
+    @user = current_user
+    @book = Book.new
+  end
+
+
   def show
     @user = User.find(params[:id])
     @books = Book.where(user_id: params[:id])
@@ -14,15 +30,44 @@ class UsersController < ApplicationController
   end
 
 
+  def create
+    @user = User.new(user_params)
+    @user.user_id = current_user.id
+    if @user.save
+      flash[:notice] = "Welcome! You have signed up successfully."
+     redirect_to user_path(@user)
+    else
+     render :books
+    end
+  end
+
+
   def edit
     @user = User.find(params[:id])
+    if @user = current_user
+      render "edit"
+    else
+      redirect_to user_path(@user)
+    end
   end
 
 
   def update
-    flash[:notice]="You have updated user successfully."
+    @user = User.find(params[:id])
+    if @user.update(user_params)
+      flash[:notice] = "You have updated user successfully."
+      redirect_to user_path(@user)
+    else
+      render :edit
+    end
   end
-end
+
+  def destroy
+    @user = User.find(params[:id])
+    @user.destroy(user_params)
+    flash[:notice] = "Signed out successfully."
+      redirect_to root_path
+  end
 
 
 private
@@ -31,3 +76,4 @@ private
     params.require(:user).permit(:name, :profile_image, :introduction)
   end
 
+end
