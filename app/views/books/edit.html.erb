@@ -4,7 +4,7 @@
 
     <div class="error-message">
       <% if @book.errors.any? %>
-      <%= @book.errors.count %> errors detected.
+      <%= @book.errors.count %> error prohibited this obj from being saved:
         <ul>
           <% @book.errors.full_messages.each do |message| %>
             <li><%= message %></li>
@@ -20,9 +20,8 @@
         <div class="book_opinion">Opinion</div>
           <%= f.text_area :body %>
 
-        <div class="update">
-          <%= f.submit "Update book", class:"btn btn-success" %>
-        </div>
+        <div class="update"></div>
+          <%= f.submit "Update Book", class:"btn btn-success" %>
       <% end %>
 
       <%= link_to "Show", book_path(@book.id) %> | <%= link_to "Back", "/books" %>

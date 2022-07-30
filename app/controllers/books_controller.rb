@@ -59,7 +59,7 @@ class BooksController < ApplicationController
     @book.user_id = current_user.id
     if @book.update(book_params)
         #ユーザーのアップデート
-      flash[:notice]="You have updated book successfully."
+      flash[:notice] = "You have updated book successfully."
       redirect_to book_path(@book)
       #ユーザーの詳細ページへのパス
     else
